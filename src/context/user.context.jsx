@@ -1,13 +1,14 @@
 import { createContext, useState } from "react";
 
-// as the actual value you want to access
+// default user values
 export const UserContext = createContext({
     currentUser: null,
     setCurrentUser: () => null,
 });
 
-
+// "children" = <App />
 export const UserProvider = ({ children }) => {
+    // change user state (signed in or out)
     const [currentUser, setCurrentUser] = useState(null);
     const value = {currentUser, setCurrentUser};
 
