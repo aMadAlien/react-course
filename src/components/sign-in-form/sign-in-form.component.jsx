@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import './sign-in-form.styles.scss';
 import { signInWithGooglePopup, createUserDocFromAuth, signInAuthUserWithEmailAndPassword  } from "../../utils/firebase/firebase.utils";
-import { connectFirestoreEmulator } from "firebase/firestore";
+import { UserContext } from "../../context/user.context";
 
 const defaultFormField = {
     email: '',
@@ -13,6 +13,8 @@ const defaultFormField = {
 const SignInForm = () => {
     const [formField, setFormField] = useState(defaultFormField);
     const { email, password } = formField;
+
+    const { setCurrentUser } = useContext(UserContext);
 
     const resetFormField = () => {
         setFormField(defaultFormField);
@@ -28,8 +30,9 @@ const SignInForm = () => {
 
         try {
             // receive user docs
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response);
+            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+            setCurrentUser(user);
+
             resetFormField();
         } catch(e) {
             // check what kind of error happened
