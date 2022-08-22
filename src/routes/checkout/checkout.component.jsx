@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { CartContext } from '../../context/cart.context';
 
 const Checkout = () => {
-    const { cartItems, addItemToCart } = useContext(CartContext);
+    // use parameters from Cart Context
+    const { cartItems, addItemToCart, removeItemToCart } = useContext(CartContext);
 
     return (
         <div>
@@ -19,8 +20,10 @@ const Checkout = () => {
                             <h2>{name}</h2>
                             <span>{quantity}</span>
                             <br />
-                            <span>decrement</span>
+                            {/* delete or decrease amount of products */}
+                            <span onClick={() => removeItemToCart(cartItem)}>decrement</span>
                             <br />
+                            {/* increase amount of products */}
                             <span onClick={() => addItemToCart(cartItem)}>increment</span>
                         </div>
                     )
