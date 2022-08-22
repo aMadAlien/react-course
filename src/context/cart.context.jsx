@@ -37,6 +37,9 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
     )
 };
 
+// delete a kind of items
+const clearCartItem = (cartItems, cartItemToClear) => cartItems.filter(cartItem => cartItem.id !== cartItemToClear.id);
+
 // CART CONTEXT parameters
 export const CartContext = createContext({
     isCartOpen: false,
@@ -44,6 +47,7 @@ export const CartContext = createContext({
     cartItems: [],
     addItemToCart: () => {},
     removeItemFromCart: () => {},
+    clearItemFromCart: () => {},
     cartCount: 0
 });
 
@@ -59,22 +63,28 @@ export const CartProvider = ({children}) => {
         setCartCout(newCartCount);
     }, [cartItems]);
     
-    // increase amount of items
+    // increase amount of items - change state
     const addItemToCart = (product) => {
         setCartItems(addCartItem(cartItems, product));
     };
 
-    // decrease amount of items
-    const removeItemToCart = (cartItem) => {
+    // decrease amount of items - change state
+    const removeItemFromCart = (cartItem) => {
         setCartItems(removeCartItem(cartItems, cartItem));
     };
 
+    // delete a kind of items - change state
+    const clearItemFromCart = (cartItem) => {
+        setCartItems(clearCartItem(cartItems, cartItem));
+    };
+    
     const value = {
         isCartOpen, 
         setIsCartOpen, 
-        cartItems, 
         addItemToCart,
-        removeItemToCart,
+        removeItemFromCart,
+        clearItemFromCart,
+        cartItems,
         cartCount };
     
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
