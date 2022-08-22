@@ -3,18 +3,21 @@ import { createContext, useState, useEffect } from "react";
 // import { addCollectionAndDocs } from "../utils/firebase/firebase.utils.js";
 import { getCategoriesAndDocs } from "../utils/firebase/firebase.utils";
 
-export const ProductsContext = createContext({
-    products: [],
+export const CategoriesContext = createContext({
+    categoriesMap: {},
 });
 
-export const ProductsProvider = ({children}) => {
-    const [products, setProducts] = useState([]);
+export const CategoriesProvider = ({children}) => {
+    const [categoriesMap, setCategoriesMap] = useState({});
 
     useEffect(() => {
         // create getCategoriesMap to use as async/await fucn
         const getCategoriesMap = async () => {
+            // receive the docs
             const categoryMap = await getCategoriesAndDocs();
             console.log(categoryMap);
+            // change state using received docs
+            setCategoriesMap(categoryMap);
         }
 
         getCategoriesMap();
@@ -25,9 +28,9 @@ export const ProductsProvider = ({children}) => {
     //     addCollectionAndDocs('categories', SHOP_DATA);
     // }, []);
 
-    const value = {products};
+    const value = {categoriesMap};
 
     return (
-        <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>
+        <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
     );
 };
