@@ -1,9 +1,10 @@
-import { useContext, Fragment } from 'react';
-import { CategoriesContext } from '../../context/categories.context';
+import { Fragment } from 'react';
 import CategoryPreview from '../../components/category-preview/category-preview.component';
+import { selectCategoriesMap } from '../../store/categories/category.selector';
+import { useSelector } from 'react';
 
 const CategoriesPreview = () => {
-    const { categoriesMap } = useContext(CategoriesContext);
+    const categoriesMap = useSelector(selectCategoriesMap);
 
     return (
         <Fragment>
