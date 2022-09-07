@@ -4,6 +4,7 @@ import CategoriesPreview from '../categories-preview/categories-preview.componen
 import Category from '../category/category.component';
 import { getCategoriesAndDocs } from '../../utils/firebase/firebase.utils';
 import { setCategoriesMap } from '../../store/categories/category.action';
+import { setCategories } from '../../store/categories/category.action';
 
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from "react";
@@ -16,10 +17,9 @@ const Shop = () => {
         // create getCategoriesMap to use as async/await fucn
         const getCategoriesMap = async () => {
             // receive the docs
-            const categoryMap = await getCategoriesAndDocs();
-            console.log(categoryMap);
+            const categoriesArray = await getCategoriesAndDocs('categories');
             // change state using received docs
-            dispatch(setCategoriesMap(categoryMap));
+            dispatch(setCategories(categoryMap));
         }
 
         getCategoriesMap();

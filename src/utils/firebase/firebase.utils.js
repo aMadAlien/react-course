@@ -62,13 +62,11 @@ export const getCategoriesAndDocs = async () => {
     const q = query(collectionRef);
 
     const querySnapshop = await getDocs(q);
-    const caterogyMap = querySnapshop.docs.reduce((acc, docSnapshot) => {
-        const { title, items } = docSnapshot.data();
-        acc[title.toLowerCase()] = items;
-        return acc;
-    }, {});
+    const caterogyMap = querySnapshop.docs.map(docSnapshot => docSnapshot.data());
+    
 
-    return caterogyMap;
+
+    // return caterogyMap;
 }
 
 // creates User Documents
