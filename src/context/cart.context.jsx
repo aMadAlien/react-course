@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
     // find the cart item to add
@@ -52,6 +53,11 @@ export const CartContext = createContext({
     cartTotal: 0
 });
 
+const CART_ACTION_TYPES = {
+    SET_CART_ITEMS: 'SET_CART_ITEMS',
+    SET_IS_CART_OPEN: 'SET_IS_CART_OPEN'
+};
+
 // INITIAL STATE FOR REDUCER
 const INITIAL_STATE = {
     isCartOpen: false,
@@ -65,10 +71,15 @@ const cartReduser = (state, action) => {
     const { type, payload } = action;
 
     switch(type) {
-        case 'SET_CART_ITEMS':
+        case CART_ACTION_TYPES.SET_CART_ITEMS:
             return {
                 ...state,
                 ...payload,
+            };
+        case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+            return {
+                ...state,
+                isCartOpen: payload,
             }
         default:
             throw new Error(`Unhandles type of ${type} in cartReducer.`)
@@ -84,8 +95,14 @@ export const CartProvider = ({children}) => {
         const newCartCount = newCartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
         const newCartTotal = newCartItems.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0);
 
-        dispatch({ type: 'SET_CART_ITEMS', payload: { cartItems: newCartItems, cartTotal: newCartTotal, cartCount: newCartCount }});
-    }
+        dispatch(
+            createAction(CART_ACTION_TYPES.SET_CART_ITEMS,{
+                cartItems: newCartItems,
+                cartTotal: newCartTotal,
+                cartCount: newCartCount
+            })
+        );
+    };
     
     // increase amount of items - change state
     const addItemToCart = (product) => {
@@ -104,6 +121,11 @@ export const CartProvider = ({children}) => {
         const newCartItems = clearCartItem(cartItems, cartItem);
         updateCartItemsReducer(newCartItems);
     };
+
+    // set open/close status for cart
+    const setIsCartOpen = (bool) => {
+        dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
+    }
     
     const value = {
         isCartOpen, 
