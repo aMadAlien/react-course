@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useReducer,useEffect } from "react";
 import { createUserDocFromAuth, onAuthStateChangedListener } from "../utils/firebase/firebase.utils";
 
 // default user values
@@ -7,10 +7,38 @@ export const UserContext = createContext({
     setCurrentUser: () => null,
 });
 
+export const USER_ACTION_TYPES = {
+    SET_CURRENT_USER: 'SET_CURRENT_USER',
+};
+
+// REDUCER FUNCTION
+const  userReducer = (state , action) => {
+    const { type, payload } = action;
+
+    switch (type) {
+        case USER_ACTION_TYPES.SET_CURRENT_USER:
+            return {
+                ...state,
+                currentUser : payload,
+            };
+        default:
+            throw new Error(`Unhandled type ${type} in userReducer`);
+    }
+};
+
+// INITIAL STATE FOR REDUCER
+const INITIAL_STATE = {
+    currentUser: null,
+};
+
 // "children" = <App />
 export const UserProvider = ({ children }) => {
-    // change user state (signed in or out)
-    const [currentUser, setCurrentUser] = useState(null);
+    const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+    const setCurrentUser = (user) => {
+        dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user});
+    };
+
     const value = {currentUser, setCurrentUser};
 
     // switching to the auth page check if user signed in or out to use correct settings
