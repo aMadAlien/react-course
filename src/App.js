@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Routes, Route } from "react-router-dom";
 
-import { createUserDocFromAuth, onAuthStateChangedListener } from "../utils/firebase/firebase.utils";
+import { createUserDocFromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
 import Home from "./routes/home/home.component";
 import Shop from "./routes/shop/shop.component";
 import Checkout from "./routes/checkout/checkout.component";

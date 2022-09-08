@@ -3,7 +3,6 @@ import './shop.styles.scss';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
 import Category from '../category/category.component';
 import { getCategoriesAndDocs } from '../../utils/firebase/firebase.utils';
-import { setCategoriesMap } from '../../store/categories/category.action';
 import { setCategories } from '../../store/categories/category.action';
 
 import { Routes, Route } from 'react-router-dom';
@@ -19,7 +18,7 @@ const Shop = () => {
             // receive the docs
             const categoriesArray = await getCategoriesAndDocs('categories');
             // change state using received docs
-            dispatch(setCategories(categoryMap));
+            dispatch(setCategories(categoriesArray));
         }
 
         getCategoriesMap();

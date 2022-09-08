@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import { createAction } from "../utils/reducer/reducer.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
@@ -88,6 +88,7 @@ const cartReduser = (state, action) => {
 
 // CART PROVIDER
 export const CartProvider = ({children}) => {
+    const [isCartOpen, setIsCartOpen] = useState(false);
     const [{ cartItems, cartCount, cartTotal }, dispatch] = useReducer(cartReduser, INITIAL_STATE);
 
     // change items state
@@ -123,9 +124,9 @@ export const CartProvider = ({children}) => {
     };
 
     // set open/close status for cart
-    const setIsCartOpen = (bool) => {
-        dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
-    }
+    // const setIsCartOpen = (bool) => {
+    //     dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
+    // }
     
     const value = {
         isCartOpen, 
